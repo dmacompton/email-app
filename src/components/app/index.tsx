@@ -7,9 +7,10 @@ import Sidebar from "../sidebar";
 import EmailContent from "../emailContent";
 import EmailList from "../emailList";
 
-import "./app.css";
-import {CATEGORY_ROUTES} from "../../system/filters";
-import {ICONS} from "../../system/interfaces";
+import { CATEGORY_ROUTES } from "../../system/filters";
+import { ICONS } from "../../system/interfaces";
+
+import "./app.scss";
 
 const Index: FunctionComponent = () => {
   const {
