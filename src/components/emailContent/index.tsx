@@ -1,11 +1,11 @@
-import React, { useContext } from "react";
+import React, { useCallback, useContext } from "react";
 
 import { timestampToDate } from "../../system/utils";
 import { EmailContext } from "../../Contexts/emailProvider";
 import saveToFile from "../../system/saveToFile";
 
 import "./emailContent.scss";
-import {ICONS, IEmail} from "../../system/interfaces";
+import { ICONS, IEmail } from "../../system/interfaces";
 
 interface Props {
   email: IEmail;
@@ -15,14 +15,20 @@ interface Props {
 const EmailContent = ({ email, onClose }: Props) => {
   const { deleteEmail, toggleUnread } = useContext(EmailContext);
 
-  const handleDeleteEmail = () => {
-    deleteEmail(email.id);
-    onClose();
-  };
+  const handleDeleteEmail = useCallback(
+    () => {
+      deleteEmail(email.id);
+      onClose();
+    },
+    [email, deleteEmail, onClose]
+  );
 
-  const handleToggleUnread = () => {
-    toggleUnread(email.id);
-  };
+  const handleToggleUnread = useCallback(
+    () => {
+      toggleUnread(email.id);
+    },
+    [email, toggleUnread]
+  );
 
   return (
     <div className="emailContent">

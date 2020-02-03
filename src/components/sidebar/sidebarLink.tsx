@@ -1,8 +1,8 @@
 import React, { FunctionComponent } from "react";
-import classnames from "classnames";
+import classNames from "classnames";
 
 import Icon from "../icon";
-import {ICategory} from "../../system/interfaces";
+import { ICategory } from "../../system/interfaces";
 
 interface Props extends ICategory {
   active: boolean;
@@ -10,18 +10,15 @@ interface Props extends ICategory {
 }
 
 const SidebarLink: FunctionComponent<Props> = ({
-  link,
   label,
   icon,
   active,
   onClick
-}: Props) => {
-  return (
-    <div className={classnames("sidebar-link", { active })} onClick={onClick}>
-      {icon && <Icon glyph={icon} />}
-      {label}
-    </div>
-  );
-};
+}: Props) => (
+  <div className={classNames("sidebar-link", { active })} onClick={onClick}>
+    {icon && <Icon glyph={icon} />}
+    {label}
+  </div>
+);
 
 export default SidebarLink;

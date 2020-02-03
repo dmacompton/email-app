@@ -1,8 +1,8 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useCallback } from "react";
 import classNames from "classnames";
 
 import { sliceString, timestampToDate } from "../../system/utils";
-import {ICONS, IEmail} from "../../system/interfaces";
+import { ICONS, IEmail } from "../../system/interfaces";
 
 interface Props {
   email: IEmail;
@@ -18,45 +18,51 @@ const ListItem: FunctionComponent<Props> = ({
   onClick,
   onToggleUnread,
   onDelete
-}: Props) => (
-  <div
-    className={classNames("email", { active })}
-    onClick={() => {
+}: Props) => {
+  const toggleUnread = useCallback(
+    e => {
+      e.stopPropagation();
+      onToggleUnread(email.id);
+    },
+    [onToggleUnread, email]
+  );
+
+  const handleDelete = useCallback(
+    e => {
+      e.stopPropagation();
+      onDelete(email.id);
+    },
+    [onDelete, email]
+  );
+
+  const handleOpen = useCallback(
+    () => {
       onClick(email);
-    }}
-  >
-    {email.unread && (
-      <div className="email-unread" onClick={e => e.stopPropagation()} />
-    )}
-    <button
-      className="email-btnToggleUnread"
-      onClick={e => {
-        e.stopPropagation();
-        onToggleUnread(email.id);
-      }}
-    >
-      {ICONS.unread}
-    </button>
-    {!email.deleted && (
-      <button
-        className="email-btnDelete"
-        onClick={e => {
-          e.stopPropagation();
-          onDelete(email.id);
-        }}
-      >
-        {ICONS.trashcan}
+    },
+    [onClick, email]
+  );
+
+  return (
+    <div className={classNames("email", { active })} onClick={handleOpen}>
+      {email.unread && <div className="email-unread" />}
+      <button className="email-btnToggleUnread" onClick={toggleUnread}>
+        {ICONS.unread}
       </button>
-    )}
-    <div className="email-container">
-      <div className="email-from-date">
-        <p className="email-from">{sliceString(email.from, 22)}</p>
-        <p className="email-date">{timestampToDate(email.date)}</p>
+      {!email.deleted && (
+        <button className="email-btnDelete" onClick={handleDelete}>
+          {ICONS.trashcan}
+        </button>
+      )}
+      <div className="email-container">
+        <div className="email-from-date">
+          <p className="email-from">{sliceString(email.from, 22)}</p>
+          <p className="email-date">{timestampToDate(email.date)}</p>
+        </div>
+        <p className="email-subject">{sliceString(email.subject, 35)}</p>
+        <p className="email-content">{sliceString(email.content, 40)}</p>
       </div>
-      <p className="email-subject">{sliceString(email.subject, 35)}</p>
-      <p className="email-content">{sliceString(email.content, 40)}</p>
     </div>
-  </div>
-);
+  );
+};
 
 export default ListItem;

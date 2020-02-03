@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
 
 import ListItem from "./listItem";
-import {ICategory, IEmail} from "../../system/interfaces";
+import { ICategory, IEmail } from "../../system/interfaces";
 
 interface Props {
   emails: IEmail[];
@@ -9,8 +9,8 @@ interface Props {
   category: ICategory;
   selectedEmail: IEmail | null;
   onSelectEmail(email: IEmail): void;
-  onToggleUnread(id: IEmail['id']): void;
-  onDelete(id: IEmail['id']): void;
+  onToggleUnread(id: IEmail["id"]): void;
+  onDelete(id: IEmail["id"]): void;
 }
 
 const ListComponent: FunctionComponent<Props> = ({
@@ -19,7 +19,8 @@ const ListComponent: FunctionComponent<Props> = ({
   category,
   selectedEmail,
   onSelectEmail,
-  onToggleUnread,onDelete
+  onToggleUnread,
+  onDelete
 }: Props) => {
   useEffect(
     () => {
