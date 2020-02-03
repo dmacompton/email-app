@@ -1,30 +1,4 @@
-export enum ICONS {
-  pin = "📌",
-  inbox = "📥",
-  trashcan = "🗑",
-  mail = "✉️",
-  unread = "📫",
-  read = "📪",
-  floppy = "💾",
-  junk = "⛔️"
-}
-
-export interface ICategory {
-  label: string;
-  icon: ICONS;
-  link: string;
-  filter(email: IEmail): boolean;
-}
-
-export interface IEmail {
-  id: string;
-  date: number;
-  from: string;
-  subject: string;
-  content: string;
-  unread: boolean;
-  deleted: boolean;
-}
+import {ICategory, ICONS, IEmail} from "./interfaces";
 
 const junkFilter = ({ from }: IEmail) =>
   from.includes(".biz") || from.includes(".tv");
@@ -63,5 +37,3 @@ export const CATEGORY_ROUTES: ICategory[] = [
     filter: junkFilter
   }
 ];
-
-export const DEFAULT_TAB = CATEGORY_ROUTES[0];

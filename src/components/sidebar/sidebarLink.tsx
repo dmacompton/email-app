@@ -2,7 +2,7 @@ import React, { FunctionComponent } from "react";
 import classnames from "classnames";
 
 import Icon from "../icon";
-import { ICategory } from "../../system/mock/constant";
+import {ICategory} from "../../system/interfaces";
 
 interface Props extends ICategory {
   active: boolean;

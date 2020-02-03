@@ -1,4 +1,4 @@
-import { IEmail } from "./mock/constant";
+import {IEmail} from "./interfaces";
 
 const { dialog } = window.require("electron").remote;
 const fs = window.require("fs");

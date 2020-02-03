@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
 
-import { ICONS } from "../../system/mock/constant";
+import {ICONS} from "../../system/interfaces";
 
 interface Props {
   glyph: ICONS;

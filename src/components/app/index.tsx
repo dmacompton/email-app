@@ -1,6 +1,5 @@
 import React, { FunctionComponent } from "react";
 
-import { CATEGORY_ROUTES, ICONS } from "../../system/mock/constant";
 import { useEmailState } from "../../hooks/emailState";
 import EmailProvider from "../../Contexts/emailProvider";
 
@@ -9,6 +8,8 @@ import EmailContent from "../emailContent";
 import EmailList from "../emailList";
 
 import "./app.css";
+import {CATEGORY_ROUTES} from "../../system/filters";
+import {ICONS} from "../../system/interfaces";
 
 const Index: FunctionComponent = () => {
   const {

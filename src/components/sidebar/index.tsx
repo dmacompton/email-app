@@ -1,10 +1,9 @@
 import React, { FunctionComponent } from "react";
 
-import { ICategory } from "../../system/mock/constant";
-
 import SidebarLink from "./sidebarLink";
 
 import "./sidebar.scss";
+import {ICategory} from "../../system/interfaces";
 
 interface Props {
   folders: ICategory[];

@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
 
-import { ICONS, IEmail } from "../../system/mock/constant";
 import { timestampToDate } from "../../system/utils";
 import { EmailContext } from "../../Contexts/emailProvider";
 import saveToFile from "../../system/saveToFile";
 
 import "./emailContent.scss";
+import {ICONS, IEmail} from "../../system/interfaces";
 
 interface Props {
   email: IEmail;

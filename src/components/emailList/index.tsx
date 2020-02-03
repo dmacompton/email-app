@@ -1,12 +1,12 @@
 import React, { FunctionComponent, useCallback, useContext } from "react";
 
-import { ICategory, IEmail } from "../../system/mock/constant";
 import { EmailContext } from "../../Contexts/emailProvider";
 
 import Header from "./header";
 import ListComponent from "./list";
 
 import "./emailList.scss";
+import {ICategory, IEmail} from "../../system/interfaces";
 
 interface Props {
   category: ICategory;

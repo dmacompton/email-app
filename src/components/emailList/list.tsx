@@ -1,8 +1,7 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
 
-import { ICategory, IEmail } from "../../system/mock/constant";
-
 import ListItem from "./listItem";
+import {ICategory, IEmail} from "../../system/interfaces";
 
 interface Props {
   emails: IEmail[];

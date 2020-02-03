@@ -1,8 +1,8 @@
 import React, { FunctionComponent } from "react";
 import classNames from "classnames";
 
-import { ICONS, IEmail } from "../../system/mock/constant";
 import { sliceString, timestampToDate } from "../../system/utils";
+import {ICONS, IEmail} from "../../system/interfaces";
 
 interface Props {
   email: IEmail;

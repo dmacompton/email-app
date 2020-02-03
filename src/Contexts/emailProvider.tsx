@@ -5,7 +5,7 @@ import React, {
   ReactNode,
   FunctionComponent
 } from "react";
-import { IEmail } from "../system/mock/constant";
+import {IEmail} from "../system/interfaces";
 
 interface EmailContext {
   emails: IEmail[];

@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { DEFAULT_TAB, ICategory, IEmail } from "../system/mock/constant";
+import {DEFAULT_TAB} from "../system/constant";
+import {ICategory, IEmail} from "../system/interfaces";
 
 export function useEmailState() {
   const [activeCategory, setActiveCategory] = useState<ICategory>(DEFAULT_TAB);

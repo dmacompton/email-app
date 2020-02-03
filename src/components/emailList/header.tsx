@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
 
-import { ICategory } from "../../system/mock/constant";
+import {ICategory} from "../../system/interfaces";
 
 interface Props {
   category: ICategory;
