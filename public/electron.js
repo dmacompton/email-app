@@ -4,7 +4,7 @@ const path = require("path");
 const isDev = require("electron-is-dev");
 
 let mainWindow;
-let childWindow = null;
+
 function createWindow() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
@@ -27,29 +27,6 @@ function createWindow() {
   mainWindow.webContents.openDevTools();
   mainWindow.on("closed", function() {
     mainWindow = null;
-    childWindow = null;
-  });
-  mainWindow.on("hide-email", function() {
-    childWindow && childWindow.hide();
-  });
-
-  ipcMain.on("show-email", function() {
-    childWindow = new BrowserWindow({
-      width: 860,
-      height: 660,
-      show: false,
-      parent: mainWindow,
-      webPreferences: {
-        nodeIntegration: true
-      }
-    });
-    childWindow.loadURL(
-      `file://${path.join(__dirname, "../build/email.html")}`
-    );
-
-    if (!childWindow.isVisible()) {
-      childWindow.show();
-    }
   });
 }
 

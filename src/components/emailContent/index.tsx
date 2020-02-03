@@ -3,7 +3,7 @@ import React, { useContext } from "react";
 import { ICONS, IEmail } from "../../system/mock/constant";
 import { timestampToDate } from "../../system/utils";
 import { EmailContext } from "../../Contexts/emailProvider";
-// import saveToFile from "../../system/saveToFile";
+import saveToFile from "../../system/saveToFile";
 
 import "./emailContent.scss";
 
@@ -13,7 +13,7 @@ interface Props {
 }
 
 const EmailContent = ({ email, onClose }: Props) => {
-    const { deleteEmail, toggleUnread } = useContext(EmailContext);
+  const { deleteEmail, toggleUnread } = useContext(EmailContext);
 
   const handleDeleteEmail = () => {
     deleteEmail(email.id);
@@ -41,8 +41,7 @@ const EmailContent = ({ email, onClose }: Props) => {
         <button
           className="roundBtn"
           onClick={() => {
-            console.log(email);
-            // saveToFile(email, email.subject);
+            saveToFile(email, email.subject);
           }}
         >
           {ICONS.floppy}
