@@ -1,10 +1,10 @@
-import { app, BrowserWindow } from "electron";
-import * as path from "path";
+const electron = require("electron");
+const { app, BrowserWindow, ipcMain } = electron;
+const path = require("path");
+const isDev = require("electron-is-dev");
 
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
-let mainWindow: Electron.BrowserWindow | null;
-
+let mainWindow;
+let childWindow = null;
 function createWindow() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
@@ -17,17 +17,39 @@ function createWindow() {
   });
 
   // and load the index.html of the app.
-  mainWindow.loadFile(path.join(__dirname, "index.html"));
+  mainWindow.loadURL(
+    isDev
+      ? "http://localhost:3000"
+      : `file://${path.join(__dirname, "../build/index.html")}`
+  );
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
-
-  // Emitted when the window is closed.
   mainWindow.on("closed", function() {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
     mainWindow = null;
+    childWindow = null;
+  });
+  mainWindow.on("hide-email", function() {
+    childWindow && childWindow.hide();
+  });
+
+  ipcMain.on("show-email", function() {
+    childWindow = new BrowserWindow({
+      width: 860,
+      height: 660,
+      show: false,
+      parent: mainWindow,
+      webPreferences: {
+        nodeIntegration: true
+      }
+    });
+    childWindow.loadURL(
+      `file://${path.join(__dirname, "../build/email.html")}`
+    );
+
+    if (!childWindow.isVisible()) {
+      childWindow.show();
+    }
   });
 }
 
@@ -35,7 +57,6 @@ function createWindow() {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on("ready", createWindow);
-
 // Quit when all windows are closed.
 app.on("window-all-closed", function() {
   // On macOS it is common for applications and their menu bar
@@ -44,7 +65,6 @@ app.on("window-all-closed", function() {
     app.quit();
   }
 });
-
 app.on("activate", function() {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
@@ -52,6 +72,6 @@ app.on("activate", function() {
     createWindow();
   }
 });
-
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+//# sourceMappingURL=electron.js.map

@@ -15,7 +15,7 @@ function saveToFile(data: IEmail, fileName: string = "email") {
     ]
   };
 
-  dialog.showSaveDialog(options).then(result => {
+  dialog.showSaveDialog(options).then((result: any) => {
     console.log("result", result);
     const filename = result.filePath;
 

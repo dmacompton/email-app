@@ -8,15 +8,16 @@ interface Props {
   email: IEmail;
   active: boolean;
   onClick(email: IEmail): void;
-  onToggleUnread(id: IEmail['id']): void;
-  onDelete(id: IEmail['id']): void;
+  onToggleUnread(id: IEmail["id"]): void;
+  onDelete(id: IEmail["id"]): void;
 }
 
 const ListItem: FunctionComponent<Props> = ({
   email,
   active,
   onClick,
-  onToggleUnread,onDelete
+  onToggleUnread,
+  onDelete
 }: Props) => (
   <div
     className={classNames("email", { active })}
@@ -36,15 +37,17 @@ const ListItem: FunctionComponent<Props> = ({
     >
       {ICONS.unread}
     </button>
-    {!email.deleted && <button
-      className="email-btnDelete"
-      onClick={e => {
-        e.stopPropagation();
-        onDelete(email.id);
-      }}
-    >
-      {ICONS.trashcan}
-    </button>}
+    {!email.deleted && (
+      <button
+        className="email-btnDelete"
+        onClick={e => {
+          e.stopPropagation();
+          onDelete(email.id);
+        }}
+      >
+        {ICONS.trashcan}
+      </button>
+    )}
     <div className="email-container">
       <div className="email-from-date">
         <p className="email-from">{sliceString(email.from, 22)}</p>
