@@ -1,4 +1,5 @@
 import React, { useCallback, useContext } from "react";
+import { ipcRenderer } from "electron";
 
 import { timestampToDate } from "../../system/utils";
 import { EmailContext } from "../../Contexts/emailProvider";
@@ -28,6 +29,10 @@ const EmailContent = () => {
     selectedEmail && toggleUnread(selectedEmail.id);
   }, [selectedEmail, toggleUnread]);
 
+  const openSeparateWindow = useCallback(() => {
+    ipcRenderer.send("show-child", selectedEmail);
+  }, [selectedEmail]);
+
   if (!selectedEmail) return <div className="noMail">{ICONS.mail}</div>;
 
   return (
@@ -51,6 +56,10 @@ const EmailContent = () => {
           }}
         >
           {ICONS.floppy}
+        </button>
+
+        <button className="roundBtn openBtn" onClick={openSeparateWindow}>
+          Open in new window
         </button>
       </div>
       <p className="emailContent-subject">{selectedEmail.subject}</p>

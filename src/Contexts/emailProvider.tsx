@@ -105,7 +105,7 @@ const EmailProvider: FunctionComponent<EmailProviderProps> = ({
       setIsLoading(false);
     });
 
-    ipcRenderer.send("async-message", ["compton", "hi from frontend"]);
+    ipcRenderer.send("get-data");
   }, [setEmails, setIsLoading]);
 
   return (

@@ -27,6 +27,11 @@
     &:active {
       opacity: 0.7;
     }
+
+    &.openBtn {
+      width: initial;
+      border-radius: 10px;
+    }
   }
 
   &-container {
@@ -53,10 +58,6 @@
       font-weight: bold;
       color: #707989;
       font-size: 13px;
-    }
-    &-unread {
-    }
-    &-deleted {
     }
   }
 }
