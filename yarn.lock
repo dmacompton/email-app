@@ -4170,6 +4170,11 @@ electron-is-dev@^1.1.0:
   resolved "https://registry.yarnpkg.com/electron-is-dev/-/electron-is-dev-1.1.0.tgz#b15a2a600bdc48a51a857d460e05f15b19a2522c"
   integrity sha512-Z1qA/1oHNowGtSBIcWk0pcLEqYT/j+13xUw/MYOrBUOL4X7VN0i0KCTf5SqyvMPmW5pSPKbo28wkxMxzZ20YnQ==
 
+electron-main-fetch@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/electron-main-fetch/-/electron-main-fetch-0.2.0.tgz#84890064bbb75a982b06fd788f78685183b440b5"
+  integrity sha512-chqEmG3gNTxin5D+xz9gQRnPxnM/ZoNoIweHwRASzpqlz7Kb9Fpfhs0uCOiEA1gmONDbURmS53AqTnPx7eqWkg==
+
 electron-publish@22.3.2:
   version "22.3.2"
   resolved "https://registry.yarnpkg.com/electron-publish/-/electron-publish-22.3.2.tgz#d2e60caf7a9643fe57e501c20acaf32c737b1c50"

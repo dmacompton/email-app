@@ -6,6 +6,8 @@ import React, {
   FunctionComponent,
   useCallback
 } from "react";
+import { ipcRenderer } from "electron";
+
 import { IEmail, ICategory } from "../system/interfaces";
 import { EmailState, reducer } from "../reducer/email";
 import Actions from "../reducer/actions";
@@ -90,20 +92,12 @@ const EmailProvider: FunctionComponent<EmailProviderProps> = ({
   useEffect(() => {
     setIsLoading(true);
 
-    fetch("https://api.myjson.com/bins/ri3em")
-      .then(resp => {
-        if (resp.ok) return resp.json();
-        throw new Error(`HTTP status ${resp.status}`);
-      })
-      .then(data => {
-        setEmails(data as IEmail[]);
-      })
-      .catch(e => {
-        console.error(e.message);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    ipcRenderer.on("async-reply", (event, emails: IEmail[]) => {
+      setEmails(emails);
+      setIsLoading(false);
+    });
+
+    ipcRenderer.send("async-message", ["compton", "hi from frontend"]);
   }, [setEmails, setIsLoading]);
 
   return (

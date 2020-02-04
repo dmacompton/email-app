@@ -2,6 +2,7 @@ const electron = require("electron");
 const { app, BrowserWindow, ipcMain } = electron;
 const path = require("path");
 const isDev = require("electron-is-dev");
+const fetch = require("electron-main-fetch");
 
 let mainWindow;
 
@@ -27,6 +28,12 @@ function createWindow() {
   // mainWindow.webContents.openDevTools();
   mainWindow.on("closed", function() {
     mainWindow = null;
+  });
+
+  ipcMain.on("async-message", event => {
+    fetch("https://api.myjson.com/bins/ri3em").then(data => {
+      event.sender.send("async-reply", data);
+    });
   });
 }
 
