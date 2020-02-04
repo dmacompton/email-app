@@ -6,41 +6,39 @@ import Header from "./header";
 import ListComponent from "./list";
 
 import "./emailList.scss";
-import {ICategory, IEmail} from "../../system/interfaces";
+import { IEmail } from "../../system/interfaces";
 
-interface Props {
-  category: ICategory;
-  selectedEmail: IEmail | null;
-  onSelectEmail(email: IEmail): void;
-}
+const EmailList: FunctionComponent = () => {
+  const {
+    emails,
+    isLoading,
+    toggleUnread,
+    deleteEmail,
+    activeCategory,
+    selectedEmail,
+    setSelectEmail
+  } = useContext(EmailContext);
 
-const EmailList: FunctionComponent<Props> = ({
-  category,
-  selectedEmail,
-  onSelectEmail
-}: Props) => {
-  const { emails, isLoading, toggleUnread, deleteEmail } = useContext(EmailContext);
-
-  const memoOnSelectEmail = useCallback(
+  const onSelectEmail = useCallback(
     (email: IEmail) => {
-      onSelectEmail(email);
+      setSelectEmail(email);
       if (email.unread) {
         toggleUnread(email.id);
       }
     },
-    [toggleUnread, onSelectEmail]
+    [toggleUnread, setSelectEmail]
   );
 
   return (
     <div className="emailList">
-      <Header category={category} />
+      <Header category={activeCategory} />
       <div className="emailList-container">
         <ListComponent
           emails={emails}
-          category={category}
+          category={activeCategory}
           isLoading={isLoading}
           selectedEmail={selectedEmail}
-          onSelectEmail={memoOnSelectEmail}
+          onSelectEmail={onSelectEmail}
           onToggleUnread={toggleUnread}
           onDelete={deleteEmail}
         />

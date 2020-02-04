@@ -1,27 +1,43 @@
 import React, {
   createContext,
-  useState,
   useEffect,
+  useReducer,
   ReactNode,
-  FunctionComponent
+  FunctionComponent,
+  useCallback
 } from "react";
-import {IEmail} from "../system/interfaces";
+import { IEmail, ICategory } from "../system/interfaces";
+import { EmailState, reducer } from "../reducer/email";
+import Actions from "../reducer/actions";
+import { DEFAULT_TAB } from "../system/constant";
 
-interface EmailContext {
-  emails: IEmail[];
-  isLoading: boolean;
+interface EmailContext extends EmailState {
   deleteEmail(id: IEmail["id"]): void;
   toggleUnread(id: IEmail["id"]): void;
+  setActiveCategory(category: ICategory): void;
+  setSelectEmail(email: IEmail | null): void;
 }
 
-export const EmailContext = createContext<EmailContext>({
+const initialState: EmailState = {
   emails: [],
   isLoading: false,
+  activeCategory: DEFAULT_TAB,
+  selectedEmail: null
+};
+
+export const EmailContext = createContext<EmailContext>({
+  ...initialState,
   deleteEmail: id => {
     throw new Error("deleteEmail() not implemented");
   },
   toggleUnread: id => {
     throw new Error("toggleUnread() not implemented");
+  },
+  setActiveCategory: category => {
+    throw new Error("setActiveCategory() not implemented");
+  },
+  setSelectEmail: email => {
+    throw new Error("setSelectEmail() not implemented");
   }
 });
 
@@ -32,11 +48,48 @@ interface EmailProviderProps {
 const EmailProvider: FunctionComponent<EmailProviderProps> = ({
   children
 }: EmailProviderProps) => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [emails, setEmails] = useState<IEmail[]>([]);
+  const [state, dispatch] = useReducer(reducer, {
+    ...initialState
+  });
+
+  const { emails, isLoading, activeCategory, selectedEmail } = state;
+
+  const setIsLoading = useCallback((isLoading: boolean) => {
+    dispatch(Actions.setIsLoading(isLoading));
+  }, []);
+  const setEmails = useCallback((emails: IEmail[]) => {
+    dispatch(Actions.setEmails(emails));
+  }, []);
+  const setActiveCategory = (category: ICategory) => {
+    dispatch(Actions.setCategory(category));
+  };
+  const setSelectEmail = (email: IEmail | null) => {
+    dispatch(Actions.selectEmail(email));
+  };
+
+  const toggleUnread = useCallback(
+    (id: IEmail["id"]) => {
+      const updatedEmails = emails.map(email =>
+        email.id === id ? { ...email, unread: !email.unread } : email
+      );
+      setEmails(updatedEmails);
+    },
+    [setEmails, emails]
+  );
+
+  const deleteEmail = useCallback(
+    (id: IEmail["id"]) => {
+      const updatedEmails = emails.map(email =>
+        email.id === id ? { ...email, deleted: true } : email
+      );
+      setEmails(updatedEmails);
+    },
+    [setEmails, emails]
+  );
 
   useEffect(() => {
     setIsLoading(true);
+
     fetch("https://api.myjson.com/bins/ri3em")
       .then(resp => {
         if (resp.ok) return resp.json();
@@ -51,26 +104,20 @@ const EmailProvider: FunctionComponent<EmailProviderProps> = ({
       .finally(() => {
         setIsLoading(false);
       });
-  }, []);
-
-  const toggleUnread = (id: IEmail["id"]) => {
-    const updatedEmails = emails.map(email =>
-      email.id === id ? { ...email, unread: !email.unread } : email
-    );
-    setEmails(updatedEmails);
-  };
-
-  const deleteEmail = (id: IEmail["id"]) => {
-    const updatedEmails = emails.map(email =>
-      email.id === id ? { ...email, deleted: true } : email
-    );
-    setEmails(updatedEmails);
-  };
-
+  }, [setEmails, setIsLoading]);
 
   return (
     <EmailContext.Provider
-      value={{ emails, isLoading, deleteEmail, toggleUnread }}
+      value={{
+        emails,
+        isLoading,
+        deleteEmail,
+        toggleUnread,
+        activeCategory,
+        selectedEmail,
+        setActiveCategory,
+        setSelectEmail
+      }}
     >
       {children}
     </EmailContext.Provider>

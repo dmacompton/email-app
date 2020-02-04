@@ -1,23 +1,20 @@
-import React, { FunctionComponent, useCallback } from "react";
+import React, { FunctionComponent, useContext, useCallback } from "react";
 
 import SidebarLink from "./sidebarLink";
 
 import "./sidebar.scss";
 import { ICategory } from "../../system/interfaces";
+import { EmailContext } from "../../Contexts/emailProvider";
 
 interface Props {
   folders: ICategory[];
-  activeCategory: ICategory;
-  setActiveCategory(category: ICategory): void;
 }
 
-const Sidebar: FunctionComponent<Props> = ({
-  folders,
-  activeCategory,
-  setActiveCategory
-}: Props) => {
+const Sidebar: FunctionComponent<Props> = ({ folders }: Props) => {
+  const { activeCategory, setActiveCategory } = useContext(EmailContext);
+
   const handleClick = useCallback(
-    item => () => {
+    (item: ICategory) => () => {
       setActiveCategory(item);
     },
     [setActiveCategory]

@@ -5,30 +5,30 @@ import { EmailContext } from "../../Contexts/emailProvider";
 import saveToFile from "../../system/saveToFile";
 
 import "./emailContent.scss";
-import { ICONS, IEmail } from "../../system/interfaces";
+import { ICONS } from "../../system/interfaces";
 
-interface Props {
-  email: IEmail;
-  onClose(): void;
-}
+const EmailContent = () => {
+  const {
+    deleteEmail,
+    toggleUnread,
+    selectedEmail,
+    setSelectEmail
+  } = useContext(EmailContext);
 
-const EmailContent = ({ email, onClose }: Props) => {
-  const { deleteEmail, toggleUnread } = useContext(EmailContext);
+  const onClose = useCallback(() => {
+    setSelectEmail(null);
+  }, [setSelectEmail]);
 
-  const handleDeleteEmail = useCallback(
-    () => {
-      deleteEmail(email.id);
-      onClose();
-    },
-    [email, deleteEmail, onClose]
-  );
+  const handleDeleteEmail = useCallback(() => {
+    selectedEmail && deleteEmail(selectedEmail.id);
+    onClose();
+  }, [selectedEmail, deleteEmail, onClose]);
 
-  const handleToggleUnread = useCallback(
-    () => {
-      toggleUnread(email.id);
-    },
-    [email, toggleUnread]
-  );
+  const handleToggleUnread = useCallback(() => {
+    selectedEmail && toggleUnread(selectedEmail.id);
+  }, [selectedEmail, toggleUnread]);
+
+  if (!selectedEmail) return <div className="noMail">{ICONS.mail}</div>;
 
   return (
     <div className="emailContent">
@@ -39,7 +39,7 @@ const EmailContent = ({ email, onClose }: Props) => {
         <button className="roundBtn" onClick={handleToggleUnread}>
           {ICONS.unread}
         </button>
-        {!email.deleted && (
+        {!selectedEmail.deleted && (
           <button className="roundBtn" onClick={handleDeleteEmail}>
             {ICONS.trashcan}
           </button>
@@ -47,23 +47,31 @@ const EmailContent = ({ email, onClose }: Props) => {
         <button
           className="roundBtn"
           onClick={() => {
-            saveToFile(email, email.subject);
+            saveToFile(selectedEmail, selectedEmail.subject);
           }}
         >
           {ICONS.floppy}
         </button>
       </div>
-      <p className="emailContent-subject">{email.subject}</p>
+      <p className="emailContent-subject">{selectedEmail.subject}</p>
       <div className="emailContent-container">
         <div className="firstLine">
-          <div className="emailContent-container-from">{email.from}</div>
+          <div className="emailContent-container-from">
+            {selectedEmail.from}
+          </div>
           <div className="emailContent-container-date">
-            {timestampToDate(email.date, true)}
+            {timestampToDate(selectedEmail.date, true)}
           </div>
         </div>
-        <div className="emailContent-container-content">{email.content}</div>
-        <div className="emailContent-container-unread">{email.unread}</div>
-        <div className="emailContent-container-deleted">{email.deleted}</div>
+        <div className="emailContent-container-content">
+          {selectedEmail.content}
+        </div>
+        <div className="emailContent-container-unread">
+          {selectedEmail.unread}
+        </div>
+        <div className="emailContent-container-deleted">
+          {selectedEmail.deleted}
+        </div>
       </div>
     </div>
   );
