@@ -31,9 +31,13 @@ function createWindow() {
   });
 
   ipcMain.on("async-message", event => {
-    fetch("https://api.myjson.com/bins/ri3em").then(data => {
-      event.sender.send("async-reply", data);
-    });
+    fetch("https://api.myjson.com/bins/ri3em")
+      .then(data => {
+        event.sender.send("async-reply", data);
+      })
+      .catch(e => {
+        event.sender.send("async-reply-error", e.message);
+      });
   });
 }
 

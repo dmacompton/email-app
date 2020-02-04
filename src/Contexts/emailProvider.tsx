@@ -92,8 +92,16 @@ const EmailProvider: FunctionComponent<EmailProviderProps> = ({
   useEffect(() => {
     setIsLoading(true);
 
-    ipcRenderer.on("async-reply", (event, emails: IEmail[]) => {
-      setEmails(emails);
+    ipcRenderer.on(
+      "async-reply",
+      (event: Electron.IpcRendererEvent, emails: IEmail[]) => {
+        setEmails(emails);
+        setIsLoading(false);
+      }
+    );
+
+    ipcRenderer.on("async-reply-error", () => {
+      alert("Fetch error");
       setIsLoading(false);
     });
 
