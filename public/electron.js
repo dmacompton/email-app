@@ -29,6 +29,8 @@ function createWindow() {
   });
 
   ipcMain.on("show-child", function(event, email) {
+    if (childWindow) return;
+
     childWindow = new BrowserWindow({
       width: 800,
       height: 600,
@@ -47,6 +49,10 @@ function createWindow() {
       .then(() => {
         childWindow.webContents.send("child-data", email);
       });
+
+    childWindow.on("closed", function() {
+      childWindow = null;
+    });
   });
 
   ipcMain.on("get-data", event => {
