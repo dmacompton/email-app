@@ -14,7 +14,7 @@ const Sidebar: FunctionComponent<Props> = ({ folders }: Props) => {
   const { activeCategory, setActiveCategory } = useContext(EmailContext);
 
   const handleClick = useCallback(
-    (item: ICategory) => () => {
+    (item: ICategory) => {
       setActiveCategory(item);
     },
     [setActiveCategory]
@@ -25,10 +25,10 @@ const Sidebar: FunctionComponent<Props> = ({ folders }: Props) => {
       <div className="sidebar-category">
         {folders.map(item => (
           <SidebarLink
-            {...item}
+            item={item}
             key={item.link}
             active={activeCategory.link === item.link}
-            onClick={handleClick(item)}
+            onClick={handleClick}
           />
         ))}
       </div>
