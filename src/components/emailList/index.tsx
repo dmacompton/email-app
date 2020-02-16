@@ -22,11 +22,8 @@ const EmailList: FunctionComponent = () => {
   const onSelectEmail = useCallback(
     (email: IEmail) => {
       setSelectEmail(email);
-      if (email.unread) {
-        toggleUnread(email.id);
-      }
     },
-    [toggleUnread, setSelectEmail]
+    [setSelectEmail]
   );
 
   return (

@@ -62,12 +62,12 @@ const EmailProvider: FunctionComponent<EmailProviderProps> = ({
   const setEmails = useCallback((emails: IEmail[]) => {
     dispatch(Actions.setEmails(emails));
   }, []);
-  const setActiveCategory = (category: ICategory) => {
+  const setActiveCategory = useCallback((category: ICategory) => {
     dispatch(Actions.setCategory(category));
-  };
-  const setSelectEmail = (email: IEmail | null) => {
+  }, []);
+  const setSelectEmail = useCallback((email: IEmail | null) => {
     dispatch(Actions.selectEmail(email));
-  };
+  }, []);
 
   const toggleUnread = useCallback(
     (id: IEmail["id"]) => {

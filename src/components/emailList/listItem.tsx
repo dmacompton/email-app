@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useCallback } from "react";
+import React, { FunctionComponent, useCallback, MouseEvent } from "react";
 import classNames from "classnames";
 
 import { sliceString, timestampToDate } from "../../system/utils";
@@ -20,7 +20,7 @@ const ListItem: FunctionComponent<Props> = ({
   onDelete
 }: Props) => {
   const toggleUnread = useCallback(
-    e => {
+    (e: MouseEvent) => {
       e.stopPropagation();
       onToggleUnread(email.id);
     },
@@ -28,19 +28,16 @@ const ListItem: FunctionComponent<Props> = ({
   );
 
   const handleDelete = useCallback(
-    e => {
+    (e: MouseEvent) => {
       e.stopPropagation();
       onDelete(email.id);
     },
     [onDelete, email]
   );
 
-  const handleOpen = useCallback(
-    () => {
-      onClick(email);
-    },
-    [onClick, email]
-  );
+  const handleOpen = useCallback(() => {
+    onClick(email);
+  }, [onClick, email]);
 
   return (
     <div className={classNames("email", { active })} onClick={handleOpen}>
