@@ -3,6 +3,10 @@ const { app, BrowserWindow, ipcMain } = electron;
 const path = require("path");
 const isDev = require("electron-is-dev");
 const fetch = require("electron-main-fetch");
+const {
+  default: installExtension,
+  REACT_DEVELOPER_TOOLS
+} = require("electron-devtools-installer");
 
 let mainWindow;
 let childWindow;
@@ -66,15 +70,18 @@ function createWindow() {
   });
 }
 
-app.on("ready", createWindow);
-
 app.on("window-all-closed", function() {
   if (process.platform !== "darwin") {
     app.quit();
   }
 });
-app.on("activate", function() {
-  if (mainWindow === null) {
-    createWindow();
+
+app.on("ready", function() {
+  if (!mainWindow) {
+    console.log("install");
+    installExtension(REACT_DEVELOPER_TOOLS, true).then(() => {
+      console.log("install inner");
+      createWindow();
+    });
   }
 });
