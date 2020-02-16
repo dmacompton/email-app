@@ -1,4 +1,4 @@
-import React, { useCallback, useContext } from "react";
+import React, { useCallback, useContext, useEffect } from "react";
 import { ipcRenderer } from "electron";
 
 import { timestampToDate } from "../../system/utils";
@@ -16,6 +16,36 @@ const EmailContent = () => {
     setSelectEmail
   } = useContext(EmailContext);
 
+  const id = selectedEmail?.id ?? null;
+  const unread = selectedEmail?.unread ?? false;
+
+  const handleToggleUnread = useCallback(() => {
+    selectedEmail && toggleUnread(selectedEmail.id);
+  }, [selectedEmail, toggleUnread]);
+
+  const readInCoupleSeconds = useCallback(
+    (id, unread) => {
+      console.log("toggleUnread");
+      let timerId: NodeJS.Timeout | null = null;
+      if (unread) {
+        timerId = setTimeout(() => {
+          if (unread && id != null) toggleUnread(id);
+        }, 500);
+      }
+
+      return () => {
+        if (timerId) {
+          clearTimeout(timerId);
+        }
+      };
+    },
+    [toggleUnread]
+  );
+
+  useEffect(() => {
+    return readInCoupleSeconds(id, unread);
+  }, [id, unread, readInCoupleSeconds]);
+
   const onClose = useCallback(() => {
     setSelectEmail(null);
   }, [setSelectEmail]);
@@ -24,10 +54,6 @@ const EmailContent = () => {
     selectedEmail && deleteEmail(selectedEmail.id);
     onClose();
   }, [selectedEmail, deleteEmail, onClose]);
-
-  const handleToggleUnread = useCallback(() => {
-    selectedEmail && toggleUnread(selectedEmail.id);
-  }, [selectedEmail, toggleUnread]);
 
   const openSeparateWindow = useCallback(() => {
     ipcRenderer.send("show-child", selectedEmail);
