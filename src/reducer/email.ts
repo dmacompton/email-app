@@ -14,11 +14,26 @@ export interface EmailState {
   selectedEmail: IEmail | null;
 }
 
+const getUpdatedSelectedEmail = (
+  emails: EmailState["emails"],
+  selectedEmail: EmailState["selectedEmail"]
+): EmailState["selectedEmail"] => {
+  if (selectedEmail) {
+    return emails.find(em => em.id === selectedEmail.id) || null;
+  }
+
+  return null;
+};
+
 export const reducer = (state: EmailState, action: Action): EmailState => {
   if (isSetEmailsAction(action)) {
     return {
       ...state,
-      emails: action.payload.emails
+      emails: action.payload.emails,
+      selectedEmail: getUpdatedSelectedEmail(
+        action.payload.emails,
+        state.selectedEmail
+      )
     };
   }
 
